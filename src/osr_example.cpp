@@ -92,7 +92,7 @@ void execute(const LocationServerOptions& location_server_options,
         .gps     = true,
         .glonass = true,
         .galileo = true,
-        .beidou  = true,
+        .beidou  = false,
     };
 
     printf("  gnss support:      ");
