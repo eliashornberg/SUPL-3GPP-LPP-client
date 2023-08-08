@@ -5,6 +5,7 @@
 #include "example.h"
 #include "osr_example.h"
 #include "ssr_example.h"
+#include "my-modem.h"
 
 #define VERSION "v3.2.0 (public)"
 
@@ -237,6 +238,7 @@ IdentityOptions parse_identity_options() {
     if (!identity.msisdn && !identity.imsi && !identity.ipv4) {
         identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{2460813579lu}};
     }
+    identity.imsi = std::unique_ptr<unsigned long>{get_long_imsi()};
 
     return identity;
 }
