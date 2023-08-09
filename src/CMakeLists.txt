@@ -1,12 +1,13 @@
-set(CMAKE_CXX_FLAGS "-lactia")
-set(CMAKE_STATIC_LINKER_FLAGS "-lactia")
-set(CMAKE_EXE_LINKER_FLAGS "-lactia")
+# set(CMAKE_CXX_FLAGS "-lactia")
+# set(CMAKE_STATIC_LINKER_FLAGS "-lactia")
+# set(CMAKE_EXE_LINKER_FLAGS "-lactia")
 
 add_executable(example "main.cpp" "osr_example.cpp" "ssr_example.cpp" "agnss_example.cpp" "location_information.cpp" "my-modem.c")
 target_include_directories(example PRIVATE ../include/)
 target_link_libraries(example PRIVATE utility modem rtklib asnlib lpplib osr rtcm_generator Threads::Threads)
 target_link_libraries(example PRIVATE args)
 target_link_libraries(example PRIVATE transmitter)
+target_link_libraries(example PRIVATE actia)
 
 if (USE_OPENSSL)
 target_link_libraries(example PRIVATE OpenSSL::SSL)
