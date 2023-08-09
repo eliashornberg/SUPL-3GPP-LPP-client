@@ -238,8 +238,9 @@ IdentityOptions parse_identity_options() {
     if (!identity.msisdn && !identity.imsi && !identity.ipv4) {
         identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{2460813579lu}};
     }
-    identity.imsi = std::unique_ptr<unsigned long>{get_long_imsi()};
-
+    // Get imsi from actia acu6pro
+    identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{get_long_imsi()}};
+    printf("imsi from actia: %lu\n", identity.imsi.get()*);
     return identity;
 }
 
