@@ -380,7 +380,7 @@ unsigned long get_long_imsi(){
 }
 
 
-int main(int argc, char **argv)
+int modem_main(int argc, char **argv)
 {
     unsigned long imsi_long = get_long_imsi();
     printf("imsi long: %lu\n", imsi_long);

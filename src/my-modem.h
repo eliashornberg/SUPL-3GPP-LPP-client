@@ -31,7 +31,7 @@ void get_cell_data(uint32_t *cellid, uint16_t *tac, char mcc[4], char mnc[4]);
 static A_IPC_RESULT cpy_imsi(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, char *imsi);
 void get_imsi(char imsi[16]);
 unsigned long get_long_imsi();
-int main(int argc, char **argv);
+int modem_main(int argc, char **argv);
 
 #ifdef __cplusplus
 }
