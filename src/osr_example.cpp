@@ -135,10 +135,12 @@ void execute(const LocationServerOptions& location_server_options,
     if (request == AD_REQUEST_INVALID) {
         throw std::runtime_error("Unable to request assistance data");
     }
-
+    
+    // Create cell object
+    struct CellACU6 cell_acu6;
     for (;;) {
         // Get cell from acu6pro
-        struct CellACU6 cell_acu6;
+       
         cell_acu6 = get_cell_data_struct();
         printf("cell from acu6: %ld\n", cell_acu6.cell);
         // gCell.cell
