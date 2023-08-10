@@ -240,10 +240,7 @@ IdentityOptions parse_identity_options() {
     }
     // Get imsi from actia acu6pro
     identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{get_long_imsi()}};
-    //unsigned long new_imsi = get_long_imsi();
-    //printf("imsi from actia: %lu\n", new_imsi);
-    //unsigned long *new_imsi = identity.imsi.get();
-    //printf("imsi from actia: %lu\n", new_imsi*);
+
     return identity;
 }
 
@@ -254,6 +251,7 @@ CellOptions parse_cell_options() {
         .tac = tac.Get(),
         .cid = ci.Get(),
     };
+    // Set cell data from acu6pro
 
     return cell_information;
 }

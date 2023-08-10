@@ -295,6 +295,46 @@ void get_cell_data(uint32_t *cellid, uint16_t *tac, char mcc[4], char mnc[4]) {
     return;
 }
 
+int[] get_cell_data_int() {
+
+    int cell_data[4];
+
+    a_log_set_logger(a_log_stdout_logger);
+
+    a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
+    if (a_ipc == NULL) {
+        printf("AIPC init failed\n");
+        return cell_data;
+    }
+
+    A_IPC_MSG_ON_STACK(msg_buf, 256);
+
+    A_IPC_RESULT rc = A_IPC_RET_ERROR;
+    rc = open_session(a_ipc, msg_buf);
+    if (rc != A_IPC_RET_OK) {
+        a_ipc_destroy(a_ipc);
+        return cell_data;
+    }
+    uint32_t cellid = 0;
+    uint16_t tac = 0;
+    char mcc[4] = "";
+    char mnc[4] = "";
+
+    rc = cpy_cell_info(a_ipc, msg_buf, &cellid, &tac, mcc, mnc);
+    printf("start of new function prints\n");
+    cell_data[0] = (int)cellid;
+    printf("Cellid: %d\n", cell_data[0]);
+    cell_data[1] = (int)tac;
+    printf("TAC: %d\n", cell_data[0]);
+    cell_data[2] = atoi(mcc);
+    printf("MCC: %d\n", cell_data[0]);
+    cell_data[3] = atoi(mnc);
+    printf("MNC: %d\n", cell_data[0]);
+    printf("end of new function prints\n");
+    a_ipc_destroy(a_ipc);
+    return cell_data;
+}
+
 /* changes the value if in variable imsi to the correct value */
 static A_IPC_RESULT cpy_imsi(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, char *imsi)
 {
@@ -382,6 +422,8 @@ unsigned long get_long_imsi(){
 
 int modem_main(int argc, char **argv)
 {
+    int cell_data[4] = get_cell_data_int();
+    return 0;
     unsigned long imsi_long = get_long_imsi();
     printf("imsi long: %lu\n", imsi_long);
     // printf("before \n");

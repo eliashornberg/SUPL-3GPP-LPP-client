@@ -28,6 +28,7 @@ static A_IPC_RESULT unsubscribe(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, bool ex
 static A_IPC_RESULT cell_wait_for_status(a_ipc_handle *a_ipc, uint32_t *cellid, uint16_t *tac, char *mcc, char *mnc);
 static A_IPC_RESULT cpy_cell_info(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, uint32_t *cellid, uint16_t *tac, char *mcc, char *mnc);
 void get_cell_data(uint32_t *cellid, uint16_t *tac, char mcc[4], char mnc[4]);
+void get_cell_data_int(int arr[4]);
 static A_IPC_RESULT cpy_imsi(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, char *imsi);
 void get_imsi(char imsi[16]);
 unsigned long get_long_imsi();
