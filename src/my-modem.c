@@ -477,18 +477,18 @@ int modem_main(int argc, char **argv)
 {
     // int cell_data[4];
     // get_cell_data_int(cell_data);
-    struct CellID acu6_cell;
-    acu6_cell = get_cell_data_struct();
-    printf("start of new function prints struct from main\n");
+    //struct CellID acu6_cell;
+    //acu6_cell = get_cell_data_struct();
+    // printf("start of new function prints struct from main\n");
    
-    printf("Cellid: %ld\n", acu6_cell.cell);
+    // printf("Cellid: %ld\n", acu6_cell.cell);
 
-    printf("TAC: %ld\n", acu6_cell.tac);
+    // printf("TAC: %ld\n", acu6_cell.tac);
 
-    printf("MCC: %ld\n", acu6_cell.mcc);
+    // printf("MCC: %ld\n", acu6_cell.mcc);
 
-    printf("MNC: %ld\n", acu6_cell.mnc);
-    printf("end of new function prints\n");
+    // printf("MNC: %ld\n", acu6_cell.mnc);
+    // printf("end of new function prints\n");
 
     return 0;
     unsigned long imsi_long = get_long_imsi();
