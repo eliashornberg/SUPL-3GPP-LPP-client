@@ -21,6 +21,12 @@
 #define IPC_INBOX_SIZE 15
 A_IPC_STATIC_BUFFERS(ipc_buffers, IPC_INBOX_SIZE, IPC_OUTBOX_SIZE);
 
+struct CellACU6 {
+    long mcc;
+    long mnc;
+    long tac;
+    long cell;
+};
 
 void usage(char *app_name) {
     printf("Syntax: %s <request | release | subscribe | unsubscribe | "
@@ -337,6 +343,49 @@ void get_cell_data_int(int arr[4]) {
     return;
 }
 
+struct CellACU6 get_cell_data_struct() {
+    struct CellACU6 acu6_cell;
+
+    a_log_set_logger(a_log_stdout_logger);
+
+    a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
+    if (a_ipc == NULL) {
+        printf("AIPC init failed\n");
+        return acu6_cell;
+    }
+
+    A_IPC_MSG_ON_STACK(msg_buf, 256);
+
+    A_IPC_RESULT rc = A_IPC_RET_ERROR;
+    rc = open_session(a_ipc, msg_buf);
+    if (rc != A_IPC_RET_OK) {
+        a_ipc_destroy(a_ipc);
+        return acu6_cell;
+    }
+    char *user = "cellulardata1";
+    rc = request(a_ipc, msg_buf, user);
+
+
+    uint32_t cellid = 0;
+    uint16_t tac = 0;
+    char mcc[4] = "";
+    char mnc[4] = "";
+
+    rc = cpy_cell_info(a_ipc, msg_buf, &cellid, &tac, mcc, mnc);
+    //printf("start of new function prints struct\n");
+    acu6_cell.cell = (long)cellid;
+    //printf("Cellid: %ld\n", acu6_cell.cell);
+    acu6_cell.tac = (long)tac;
+    //printf("TAC: %ld\n", acu6_cell.tac);
+    acu6_cell.mcc = atoi(mcc);
+    //printf("MCC: %ld\n", acu6_cell.mcc);
+    acu6_cell.mnc = atoi(mnc);
+    //printf("MNC: %ld\n", acu6_cell.mnc);
+    //printf("end of new function prints\n");
+    a_ipc_destroy(a_ipc);
+    return acu6_cell;
+}
+
 /* changes the value if in variable imsi to the correct value */
 static A_IPC_RESULT cpy_imsi(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, char *imsi)
 {
@@ -424,8 +473,21 @@ unsigned long get_long_imsi(){
 
 int modem_main(int argc, char **argv)
 {
-    int cell_data[4];
-    get_cell_data_int(cell_data);
+    // int cell_data[4];
+    // get_cell_data_int(cell_data);
+    struct CellACU6 acu6_cell;
+    acu6_cell = get_cell_data_struct();
+    printf("start of new function prints struct from main\n");
+   
+    printf("Cellid: %ld\n", acu6_cell.cell);
+
+    printf("TAC: %ld\n", acu6_cell.tac);
+
+    printf("MCC: %ld\n", acu6_cell.mcc);
+
+    printf("MNC: %ld\n", acu6_cell.mnc);
+    printf("end of new function prints\n");
+
     return 0;
     unsigned long imsi_long = get_long_imsi();
     printf("imsi long: %lu\n", imsi_long);

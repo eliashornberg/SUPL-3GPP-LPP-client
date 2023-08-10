@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <transmitter/transmitter.h>
 #include "location_information.h"
+#include "my-modem.h"
 
 namespace osr_example {
 
@@ -136,6 +137,13 @@ void execute(const LocationServerOptions& location_server_options,
     }
 
     for (;;) {
+        // Get cell from acu6pro
+        struct CellACU6 cell_acu6;
+        cell_acu6 = get_cell_data_struct();
+        printf("cell from acu6: %ld\n"cell_acu6.cell)
+        // gCell.cell
+
+
         struct timespec timeout;
         timeout.tv_sec  = 0;
         timeout.tv_nsec = 1000000 * 100;  // 100 ms
