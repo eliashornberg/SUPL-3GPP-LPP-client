@@ -264,7 +264,7 @@ static A_IPC_RESULT cpy_cell_info(
 
 
 /* Reutrns a struct containt cellid, mcc, mnc and tac from the ACU6PRO */
-struct CellID get_cell_data_struct() {
+struct CellID get_cell_data() {
     struct CellID acu6_cell;
 
     a_log_set_logger(a_log_stdout_logger);
@@ -334,7 +334,7 @@ static A_IPC_RESULT cpy_imsi(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, char *imsi
 
 
 /* Returns the value of imsi, creates a msg buffer and more. Call from supl-client*/
-unsigned long get_long_imsi(){
+unsigned long get_imsi(){
     a_log_set_logger(a_log_stdout_logger);
 
     a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);

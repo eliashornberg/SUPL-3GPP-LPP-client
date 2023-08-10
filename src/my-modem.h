@@ -18,8 +18,8 @@ extern "C" {
 #include <lpp/cell_id.h>
 #include "actia/actia.h"
 
-struct CellID get_cell_data_struct();
-unsigned long get_long_imsi();
+struct CellID get_cell_data();
+unsigned long get_imsi();
 
 #ifdef __cplusplus
 }

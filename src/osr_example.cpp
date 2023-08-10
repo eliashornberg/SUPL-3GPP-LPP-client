@@ -25,7 +25,7 @@ static std::mutex cell_mutex;
 /* Sets gCell to new cell value from actia box, runs on another thread */
 void* cell_loop(void*) {
     while(true) {
-        auto cell_acu6 = get_cell_data_struct();
+        auto cell_acu6 = get_cell_data();
         printf("cell from acu6: %ld\n", cell_acu6.cell);
         cell_mutex.lock();
         gCell = cell_acu6;

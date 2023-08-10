@@ -239,7 +239,7 @@ IdentityOptions parse_identity_options() {
         identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{2460813579lu}};
     }
     // Get imsi from actia acu6pro
-    identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{get_long_imsi()}};
+    identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{get_imsi()}};
 
     return identity;
 }
