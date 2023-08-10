@@ -141,8 +141,8 @@ void execute(const LocationServerOptions& location_server_options,
     for (;;) {
         // Get cell from acu6pro
        
-        cell_acu6 = get_cell_data_struct();
-        printf("cell from acu6: %ld\n", cell_acu6.cell);
+        //cell_acu6 = get_cell_data_struct();
+        //printf("cell from acu6: %ld\n", cell_acu6.cell);
         // gCell.cell
 
 
