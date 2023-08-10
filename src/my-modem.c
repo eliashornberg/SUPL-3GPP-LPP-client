@@ -15,7 +15,7 @@
 #include "actia/actia.h"
 
 #define IPC_ID (A_IPC_GUEST_MIN_ID + 5)
-#define MAXIMAL_EXECUTION_TIME_S 1 //60
+#define MAXIMAL_EXECUTION_TIME_S 60
 #define USER_MAX_LENGTH 15
 
 #define IPC_OUTBOX_SIZE 10
@@ -136,7 +136,7 @@ static A_IPC_RESULT open_session(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf)
 
     if (wait_for_msg(a_ipc,
                       msg_buf,
-                     1000,
+                     5000,
                      A_IPC_MSG_IPC_OPEN_SESSION_RSP)) {
         printf("Open session response result: %d\n",
                msg_buf->cellular_data_request_rsp.result);
@@ -188,7 +188,7 @@ static A_IPC_RESULT subscribe(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, bool exte
 
     if (wait_for_msg(a_ipc,
                      msg_buf,
-                     1000,
+                     5000,
                      wait_type)) {
         printf("Cellular data subscribe response result: %d\n",
                msg_buf->cellular_status_subscribe_rsp.result);

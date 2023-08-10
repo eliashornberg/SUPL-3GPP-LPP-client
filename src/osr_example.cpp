@@ -8,6 +8,7 @@
 #include <transmitter/transmitter.h>
 #include "location_information.h"
 #include "my-modem.h"
+#include <mutex>
 
 namespace osr_example {
 
@@ -18,6 +19,22 @@ static std::unique_ptr<RTCMGenerator> gGenerator;
 static Format                         gFormat;
 
 static void osr_assistance_data_callback(LPP_Client*, LPP_Transaction*, LPP_Message*, void*);
+
+static std::mutex cell_mutex;
+
+void* cell_loop(void*) {
+    while(true) {
+        auto cell_acu6 = get_cell_data_struct();
+        printf("cell from acu6: %ld\n", cell_acu6.cell);
+        cell_mutex.lock();
+        gCell = cell_acu6;
+        cell_mutex.unlock();
+        struct timespec timeout;
+        timeout.tv_sec  = 0;
+        timeout.tv_nsec = 1000000 * 100 * 50;  // 5 s
+        nanosleep(&timeout, NULL);
+    }
+}
 
 void execute(const LocationServerOptions& location_server_options,
              const IdentityOptions& identity_options, const CellOptions& cell_options,
@@ -135,17 +152,19 @@ void execute(const LocationServerOptions& location_server_options,
     if (request == AD_REQUEST_INVALID) {
         throw std::runtime_error("Unable to request assistance data");
     }
-    
+
+    pthread_t handle;
+    pthread_create(&handle, nullptr, cell_loop, nullptr);
     // Create cell object
-    struct CellID cell_acu6;
+    //struct CellID cell_acu6;
+    auto prev_cell = gCell;
     for (;;) {
         // Get cell from acu6pro
        
-        cell_acu6 = get_cell_data_struct();
-        printf("cell from acu6: %ld\n", cell_acu6.cell);
-        if (gCell != cell_acu6) {
-            gCell = cell_acu6;
+
+        if (gCell != prev_cell) {
             client.update_assistance_data(request, gCell);
+            prev_cell = gCell;
         }
 
 
