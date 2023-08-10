@@ -343,6 +343,7 @@ void get_cell_data_int(int arr[4]) {
     return;
 }
 
+/* Reutrns a struct containt cellid, mcc, mnc and tac from the ACU6PRO */
 struct CellACU6 get_cell_data_struct() {
     struct CellACU6 acu6_cell;
 
@@ -362,8 +363,8 @@ struct CellACU6 get_cell_data_struct() {
         a_ipc_destroy(a_ipc);
         return acu6_cell;
     }
-    char *user = "cellulardata1";
-    rc = request(a_ipc, msg_buf, user);
+    //char *user = "cellulardata1";
+    //rc = request(a_ipc, msg_buf, user);
 
 
     uint32_t cellid = 0;
