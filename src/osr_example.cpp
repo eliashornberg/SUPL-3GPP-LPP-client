@@ -137,7 +137,7 @@ void execute(const LocationServerOptions& location_server_options,
     }
     
     // Create cell object
-    struct CellACU6 cell_acu6;
+    struct CellID cell_acu6;
     for (;;) {
         // Get cell from acu6pro
        
