@@ -11,6 +11,7 @@
 #include <sys/param.h>
 #include <sys/epoll.h>
 
+#include <lpp/cell_id.h>
 #include "actia/actia.h"
 
 #define IPC_ID (A_IPC_GUEST_MIN_ID + 5)
@@ -21,12 +22,12 @@
 #define IPC_INBOX_SIZE 15
 A_IPC_STATIC_BUFFERS(ipc_buffers, IPC_INBOX_SIZE, IPC_OUTBOX_SIZE);
 
-struct CellACU6 {
-    long mcc;
-    long mnc;
-    long tac;
-    long cell;
-};
+// struct CellACU6 {
+//     long mcc;
+//     long mnc;
+//     long tac;
+//     long cell;
+// };
 
 void usage(char *app_name) {
     printf("Syntax: %s <request | release | subscribe | unsubscribe | "
@@ -344,8 +345,8 @@ void get_cell_data_int(int arr[4]) {
 }
 
 /* Reutrns a struct containt cellid, mcc, mnc and tac from the ACU6PRO */
-struct CellACU6 get_cell_data_struct() {
-    struct CellACU6 acu6_cell;
+struct CellID get_cell_data_struct() {
+    struct CellID acu6_cell;
 
     a_log_set_logger(a_log_stdout_logger);
 
@@ -375,7 +376,7 @@ struct CellACU6 get_cell_data_struct() {
     rc = cpy_cell_info(a_ipc, msg_buf, &cellid, &tac, mcc, mnc);
     //printf("start of new function prints struct\n");
     acu6_cell.cell = (long)cellid;
-    //printf("Cellid: %ld\n", acu6_cell.cell);
+    printf("Cellid from inside function: %ld\n", acu6_cell.cell);
     acu6_cell.tac = (long)tac;
     //printf("TAC: %ld\n", acu6_cell.tac);
     acu6_cell.mcc = atoi(mcc);
@@ -476,7 +477,7 @@ int modem_main(int argc, char **argv)
 {
     // int cell_data[4];
     // get_cell_data_int(cell_data);
-    struct CellACU6 acu6_cell;
+    struct CellID acu6_cell;
     acu6_cell = get_cell_data_struct();
     printf("start of new function prints struct from main\n");
    
