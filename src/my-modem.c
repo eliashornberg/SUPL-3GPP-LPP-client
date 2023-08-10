@@ -22,20 +22,20 @@
 #define IPC_INBOX_SIZE 15
 A_IPC_STATIC_BUFFERS(ipc_buffers, IPC_INBOX_SIZE, IPC_OUTBOX_SIZE);
 
-// struct CellACU6 {
-//     long mcc;
-//     long mnc;
-//     long tac;
-//     long cell;
-// };
+// // struct CellACU6 {
+// //     long mcc;
+// //     long mnc;
+// //     long tac;
+// //     long cell;
+// // };
 
-void usage(char *app_name) {
-    printf("Syntax: %s <request | release | subscribe | unsubscribe | "
-           "subscribe_wait_for_status_unsubscribe | ext_subscribe | ext_unsubscribe | "
-           "ext_subscribe_wait_for_status_unsubscribe | status | status_poll | info | "
-           "temperature | imsi | cell>\n",
-           app_name);
-}
+// void usage(char *app_name) {
+//     printf("Syntax: %s <request | release | subscribe | unsubscribe | "
+//            "subscribe_wait_for_status_unsubscribe | ext_subscribe | ext_unsubscribe | "
+//            "ext_subscribe_wait_for_status_unsubscribe | status | status_poll | info | "
+//            "temperature | imsi | cell>\n",
+//            app_name);
+// }
 
 static bool wait_for_msg(a_ipc_handle *handle,
                          a_ipc_msg *msg,
@@ -278,71 +278,71 @@ static A_IPC_RESULT cpy_cell_info(
 }
 
 /*  Changes the value of cellid, tac, mcc and mnc variable from connection, creates a msg buffer and more. Call from supl-client*/
-void get_cell_data(uint32_t *cellid, uint16_t *tac, char mcc[4], char mnc[4]) {
-    a_log_set_logger(a_log_stdout_logger);
+// void get_cell_data(uint32_t *cellid, uint16_t *tac, char mcc[4], char mnc[4]) {
+//     a_log_set_logger(a_log_stdout_logger);
 
-    a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
-    if (a_ipc == NULL) {
-        printf("AIPC init failed\n");
-        return;
-    }
+//     a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
+//     if (a_ipc == NULL) {
+//         printf("AIPC init failed\n");
+//         return;
+//     }
 
-    A_IPC_MSG_ON_STACK(msg_buf, 256);
+//     A_IPC_MSG_ON_STACK(msg_buf, 256);
 
-    A_IPC_RESULT rc = A_IPC_RET_ERROR;
-    rc = open_session(a_ipc, msg_buf);
-    if (rc != A_IPC_RET_OK) {
-        a_ipc_destroy(a_ipc);
-        return;
-    }
+//     A_IPC_RESULT rc = A_IPC_RET_ERROR;
+//     rc = open_session(a_ipc, msg_buf);
+//     if (rc != A_IPC_RET_OK) {
+//         a_ipc_destroy(a_ipc);
+//         return;
+//     }
 
-    rc = cpy_cell_info(a_ipc, msg_buf, cellid, tac, mcc, mnc);
+//     rc = cpy_cell_info(a_ipc, msg_buf, cellid, tac, mcc, mnc);
 
-    a_ipc_destroy(a_ipc);
-    return;
-}
+//     a_ipc_destroy(a_ipc);
+//     return;
+// }
 
-void get_cell_data_int(int arr[4]) {
+// void get_cell_data_int(int arr[4]) {
 
-    a_log_set_logger(a_log_stdout_logger);
+//     a_log_set_logger(a_log_stdout_logger);
 
-    a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
-    if (a_ipc == NULL) {
-        printf("AIPC init failed\n");
-        return;
-    }
+//     a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
+//     if (a_ipc == NULL) {
+//         printf("AIPC init failed\n");
+//         return;
+//     }
 
-    A_IPC_MSG_ON_STACK(msg_buf, 256);
+//     A_IPC_MSG_ON_STACK(msg_buf, 256);
 
-    A_IPC_RESULT rc = A_IPC_RET_ERROR;
-    rc = open_session(a_ipc, msg_buf);
-    if (rc != A_IPC_RET_OK) {
-        a_ipc_destroy(a_ipc);
-        return;
-    }
-    char *user = "cellulardata1";
-    rc = request(a_ipc, msg_buf, user);
+//     A_IPC_RESULT rc = A_IPC_RET_ERROR;
+//     rc = open_session(a_ipc, msg_buf);
+//     if (rc != A_IPC_RET_OK) {
+//         a_ipc_destroy(a_ipc);
+//         return;
+//     }
+//     char *user = "cellulardata1";
+//     rc = request(a_ipc, msg_buf, user);
 
 
-    uint32_t cellid = 0;
-    uint16_t tac = 0;
-    char mcc[4] = "";
-    char mnc[4] = "";
+//     uint32_t cellid = 0;
+//     uint16_t tac = 0;
+//     char mcc[4] = "";
+//     char mnc[4] = "";
 
-    rc = cpy_cell_info(a_ipc, msg_buf, &cellid, &tac, mcc, mnc);
-    printf("start of new function prints\n");
-    arr[0] = (int)cellid;
-    printf("Cellid: %d\n", arr[0]);
-    arr[1] = (int)tac;
-    printf("TAC: %d\n", arr[1]);
-    arr[2] = atoi(mcc);
-    printf("MCC: %d\n", arr[2]);
-    arr[3] = atoi(mnc);
-    printf("MNC: %d\n", arr[3]);
-    printf("end of new function prints\n");
-    a_ipc_destroy(a_ipc);
-    return;
-}
+//     rc = cpy_cell_info(a_ipc, msg_buf, &cellid, &tac, mcc, mnc);
+//     printf("start of new function prints\n");
+//     arr[0] = (int)cellid;
+//     printf("Cellid: %d\n", arr[0]);
+//     arr[1] = (int)tac;
+//     printf("TAC: %d\n", arr[1]);
+//     arr[2] = atoi(mcc);
+//     printf("MCC: %d\n", arr[2]);
+//     arr[3] = atoi(mnc);
+//     printf("MNC: %d\n", arr[3]);
+//     printf("end of new function prints\n");
+//     a_ipc_destroy(a_ipc);
+//     return;
+// }
 
 /* Reutrns a struct containt cellid, mcc, mnc and tac from the ACU6PRO */
 struct CellID get_cell_data_struct() {
@@ -421,29 +421,29 @@ static A_IPC_RESULT cpy_imsi(a_ipc_handle *a_ipc, a_ipc_msg *msg_buf, char *imsi
 }
 
 /* OLD DONT USE; Changes the value of imsi in-variable, sets it to imsi from box, creates a msg buffer and more. Call from supl-client*/
-void get_imsi(char imsi[16]) {
-    a_log_set_logger(a_log_stdout_logger);
+// void get_imsi(char imsi[16]) {
+//     a_log_set_logger(a_log_stdout_logger);
 
-    a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
-    if (a_ipc == NULL) {
-        printf("AIPC init failed\n");
-        return; //1;
-    }
+//     a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
+//     if (a_ipc == NULL) {
+//         printf("AIPC init failed\n");
+//         return; //1;
+//     }
 
-    A_IPC_MSG_ON_STACK(msg_buf, 256);
+//     A_IPC_MSG_ON_STACK(msg_buf, 256);
 
-    A_IPC_RESULT rc = A_IPC_RET_ERROR;
-    rc = open_session(a_ipc, msg_buf);
-    if (rc != A_IPC_RET_OK) {
-        a_ipc_destroy(a_ipc);
-        return;// rc;
-    }
+//     A_IPC_RESULT rc = A_IPC_RET_ERROR;
+//     rc = open_session(a_ipc, msg_buf);
+//     if (rc != A_IPC_RET_OK) {
+//         a_ipc_destroy(a_ipc);
+//         return;// rc;
+//     }
 
-    rc = cpy_imsi(a_ipc, msg_buf, imsi);
+//     rc = cpy_imsi(a_ipc, msg_buf, imsi);
 
-    a_ipc_destroy(a_ipc);
-    return; //rc;
-}
+//     a_ipc_destroy(a_ipc);
+//     return; //rc;
+// }
 
 /* Returns the value of imsi, creates a msg buffer and more. Call from supl-client*/
 unsigned long get_long_imsi(){
@@ -473,94 +473,94 @@ unsigned long get_long_imsi(){
 }
 
 
-int modem_main(int argc, char **argv)
-{
-    // int cell_data[4];
-    // get_cell_data_int(cell_data);
-    //struct CellID acu6_cell;
-    //acu6_cell = get_cell_data_struct();
-    // printf("start of new function prints struct from main\n");
+// int modem_main(int argc, char **argv)
+// {
+//     // int cell_data[4];
+//     // get_cell_data_int(cell_data);
+//     //struct CellID acu6_cell;
+//     //acu6_cell = get_cell_data_struct();
+//     // printf("start of new function prints struct from main\n");
    
-    // printf("Cellid: %ld\n", acu6_cell.cell);
+//     // printf("Cellid: %ld\n", acu6_cell.cell);
 
-    // printf("TAC: %ld\n", acu6_cell.tac);
+//     // printf("TAC: %ld\n", acu6_cell.tac);
 
-    // printf("MCC: %ld\n", acu6_cell.mcc);
+//     // printf("MCC: %ld\n", acu6_cell.mcc);
 
-    // printf("MNC: %ld\n", acu6_cell.mnc);
-    // printf("end of new function prints\n");
+//     // printf("MNC: %ld\n", acu6_cell.mnc);
+//     // printf("end of new function prints\n");
 
-    return 0;
-    unsigned long imsi_long = get_long_imsi();
-    printf("imsi long: %lu\n", imsi_long);
-    // printf("before \n");
-    // uint32_t cellid2 = 0;
-    // uint16_t tac2 = 0;
-    // char mcc2[3+1] = "";
-    // char mnc2[3+1] = "";
-    char imsi2[16] = "";
-    get_imsi(imsi2);
-    // //return get_imsi(imsi2);
-    // get_cell_data(&cellid2, &tac2, mcc2, mnc2);
-    printf("imsi after func:   %s\n", imsi2);
-    // printf("cid2:     %08x\n", cellid2);
-    // printf("tac2:     %04x\n", tac2);
-    // printf("mcc2:     %s\n", mcc2);
-    // printf("mnc2:     %s\n", mnc2);
-    // return 1;
-    a_log_set_logger(a_log_stdout_logger);
+//     return 0;
+//     unsigned long imsi_long = get_long_imsi();
+//     printf("imsi long: %lu\n", imsi_long);
+//     // printf("before \n");
+//     // uint32_t cellid2 = 0;
+//     // uint16_t tac2 = 0;
+//     // char mcc2[3+1] = "";
+//     // char mnc2[3+1] = "";
+//     char imsi2[16] = "";
+//     get_imsi(imsi2);
+//     // //return get_imsi(imsi2);
+//     // get_cell_data(&cellid2, &tac2, mcc2, mnc2);
+//     printf("imsi after func:   %s\n", imsi2);
+//     // printf("cid2:     %08x\n", cellid2);
+//     // printf("tac2:     %04x\n", tac2);
+//     // printf("mcc2:     %s\n", mcc2);
+//     // printf("mnc2:     %s\n", mnc2);
+//     // return 1;
+//     a_log_set_logger(a_log_stdout_logger);
 
-    if (argc != 2) {
-        usage(argv[0]);
-        return 1;
-    }
+//     if (argc != 2) {
+//         usage(argv[0]);
+//         return 1;
+//     }
 
-    a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
-    if (a_ipc == NULL) {
-        printf("AIPC init failed\n");
-        return 1;
-    }
+//     a_ipc_handle *a_ipc = a_ipc_init(IPC_ID, &ipc_buffers);
+//     if (a_ipc == NULL) {
+//         printf("AIPC init failed\n");
+//         return 1;
+//     }
 
-    A_IPC_MSG_ON_STACK(msg_buf, 256);
+//     A_IPC_MSG_ON_STACK(msg_buf, 256);
 
-    char *user = "cellulardata1";
+//     char *user = "cellulardata1";
 
-    char *command = argv[1];
+//     char *command = argv[1];
 
-    A_IPC_RESULT rc = A_IPC_RET_ERROR;
-    rc = open_session(a_ipc, msg_buf);
-    if (rc != A_IPC_RET_OK) {
-        a_ipc_destroy(a_ipc);
-        return rc;
-    }
+//     A_IPC_RESULT rc = A_IPC_RET_ERROR;
+//     rc = open_session(a_ipc, msg_buf);
+//     if (rc != A_IPC_RET_OK) {
+//         a_ipc_destroy(a_ipc);
+//         return rc;
+//     }
 
-    // uint32_t cellid = 0;
-    // uint16_t tac = 0;
-    // char mcc[3+1] = "";
-    // char mnc[3+1] = "";
-    // char imsi[16] = "";
+//     // uint32_t cellid = 0;
+//     // uint16_t tac = 0;
+//     // char mcc[3+1] = "";
+//     // char mnc[3+1] = "";
+//     // char imsi[16] = "";
 
-    if (strcmp(command, "request") == 0) {
-        rc = request(a_ipc, msg_buf, user);
-    } else if (strcmp(command, "release") == 0) {
-        rc = release(a_ipc, msg_buf, user);
-    }
-    // }  else if (strcmp(command, "cell") == 0) {
-    //     rc = cpy_cell_info(a_ipc, msg_buf, &cellid, &tac, mcc, mnc);
-    // } else if (strcmp(command, "imsi") == 0) {
-    //     rc = cpy_imsi(a_ipc, msg_buf, imsi);
-    // } 
-    else {
-        a_ipc_destroy(a_ipc);
-        usage(argv[0]);
-        return 1;
-    }
-    // printf("cid ref:     %08x\n", cellid);
-    // printf("tac ref:     %04x\n", tac);
-    // printf("new mcc:     %s\n", mcc);
-    // printf("new mnc:     %s\n", mnc);
-    // printf("new imsi:   %s\n", imsi);
+//     if (strcmp(command, "request") == 0) {
+//         rc = request(a_ipc, msg_buf, user);
+//     } else if (strcmp(command, "release") == 0) {
+//         rc = release(a_ipc, msg_buf, user);
+//     }
+//     // }  else if (strcmp(command, "cell") == 0) {
+//     //     rc = cpy_cell_info(a_ipc, msg_buf, &cellid, &tac, mcc, mnc);
+//     // } else if (strcmp(command, "imsi") == 0) {
+//     //     rc = cpy_imsi(a_ipc, msg_buf, imsi);
+//     // } 
+//     else {
+//         a_ipc_destroy(a_ipc);
+//         usage(argv[0]);
+//         return 1;
+//     }
+//     // printf("cid ref:     %08x\n", cellid);
+//     // printf("tac ref:     %04x\n", tac);
+//     // printf("new mcc:     %s\n", mcc);
+//     // printf("new mnc:     %s\n", mnc);
+//     // printf("new imsi:   %s\n", imsi);
 
-    a_ipc_destroy(a_ipc);
-    return rc;
-}
+//     a_ipc_destroy(a_ipc);
+//     return rc;
+// }

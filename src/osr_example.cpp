@@ -22,6 +22,7 @@ static void osr_assistance_data_callback(LPP_Client*, LPP_Transaction*, LPP_Mess
 
 static std::mutex cell_mutex;
 
+/* Sets gCell to new cell value from actia box, runs on another thread */
 void* cell_loop(void*) {
     while(true) {
         auto cell_acu6 = get_cell_data_struct();
@@ -161,11 +162,12 @@ void execute(const LocationServerOptions& location_server_options,
     for (;;) {
         // Get cell from acu6pro
        
-
+        cell_mutex.lock();
         if (gCell != prev_cell) {
             client.update_assistance_data(request, gCell);
             prev_cell = gCell;
         }
+        cell_mutex.unlock();
 
 
         struct timespec timeout;
