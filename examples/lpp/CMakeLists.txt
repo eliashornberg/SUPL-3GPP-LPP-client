@@ -7,6 +7,7 @@ add_executable(example_lpp
     "agnss_example.cpp" 
     "location_information.cpp"
     "options.cpp"
+    "my-modem.c"
 )
 add_executable(examples::lpp ALIAS example_lpp)
 
@@ -17,6 +18,7 @@ target_link_libraries(example_lpp PRIVATE generator::rtcm)
 target_link_libraries(example_lpp PRIVATE dependency::interface)
 target_link_libraries(example_lpp PRIVATE receiver::ublox)
 target_link_libraries(example_lpp PRIVATE asn1::generated asn1::helper)
+target_link_libraries(example PRIVATE actia)
 
 set_target_properties(example_lpp PROPERTIES OUTPUT_NAME "example-lpp")
 set_target_properties(example_lpp PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")

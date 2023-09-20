@@ -1,6 +1,7 @@
 #include "options.hpp"
 #include <interface/interface.hpp>
 #include <receiver/ublox/receiver.hpp>
+#include "my-modem.h"
 
 #define VERSION "v3.3.0 (public)"
 
@@ -271,7 +272,9 @@ IdentityOptions parse_identity_options() {
     if (!identity.msisdn && !identity.imsi && !identity.ipv4) {
         identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{2460813579lu}};
     }
-
+    // Get imsi from actia acu6pro
+    identity.imsi = std::unique_ptr<unsigned long>{new unsigned long{get_imsi()}};
+    
     return identity;
 }
 

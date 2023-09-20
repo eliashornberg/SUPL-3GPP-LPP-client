@@ -7,6 +7,8 @@
 #include <sstream>
 #include <stdexcept>
 #include "location_information.h"
+#include "my-modem.h"
+#include <mutex>
 
 using RtcmGenerator = std::unique_ptr<generator::rtcm::Generator>;
 using UReceiver     = receiver::ublox::ThreadedReceiver;
@@ -21,6 +23,23 @@ static std::unique_ptr<Modem_AT>  gModem;
 static std::unique_ptr<UReceiver> gUbloxReceiver;
 
 static void assistance_data_callback(LPP_Client*, LPP_Transaction*, LPP_Message*, void*);
+
+static std::mutex cell_mutex;
+
+/* Sets gCell to new cell value from actia box, runs on another thread */
+void* cell_loop(void*) {
+    while(true) {
+        auto cell_acu6 = get_cell_data();
+        printf("cell from acu6: %ld\n", cell_acu6.cell);
+        cell_mutex.lock();
+        gCell = cell_acu6;
+        cell_mutex.unlock();
+        struct timespec timeout;
+        timeout.tv_sec  = 0;
+        timeout.tv_nsec = 1000000 * 100 * 50;  // 5 s
+        nanosleep(&timeout, NULL);
+    }
+}
 
 void execute(Options options, osr_example::Format format, osr_example::MsmType msm_type) {
     gOptions = std::move(options);
@@ -150,7 +169,20 @@ void execute(Options options, osr_example::Format format, osr_example::MsmType m
         throw std::runtime_error("Unable to request assistance data");
     }
 
+    // add on (get cell from acu6)
+    pthread_t handle;
+    pthread_create(&handle, nullptr, cell_loop, nullptr);
+    auto prev_cell = gCell;
     for (;;) {
+
+        cell_mutex.lock();
+        if (gCell != prev_cell) {
+            client.update_assistance_data(request, gCell);
+            prev_cell = gCell;
+        }
+        cell_mutex.unlock();
+        // end add on
+
         struct timespec timeout;
         timeout.tv_sec  = 0;
         timeout.tv_nsec = 1000000 * 100;  // 100 ms
